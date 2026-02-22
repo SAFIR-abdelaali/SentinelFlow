@@ -53,3 +53,13 @@ export async function askAgentStream(
 
   return finalOutput || "No response received.";
 }
+
+export async function markOrderAsNotified(orderId: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/mark_notified/${orderId}`, {
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    console.error(`Failed to mark order ${orderId} as notified: ${response.status}`);
+  }
+}

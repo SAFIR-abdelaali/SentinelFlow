@@ -48,12 +48,12 @@ TOOL_MAP = {
 SYSTEM_PROMPT = (
     "You are SentinelFlow's logistics assistant. Follow these rules strictly:\n"
     "1. Use get_shipping_status to check the order status.\n"
-    "2. If the order is DELAYED, also use draft_apology_email to draft an apology (use 'Valued Customer' as the customer name).\n"
-    "3. If the order is ON TIME or DELIVERED, simply report the status. Do NOT draft an email.\n"
-    "4. When an email is drafted, include the FULL email content in your response.\n"
-    "5. Give a concise, direct summary. Do NOT add disclaimers or meta-commentary."
+    "2. If the order is DELAYED, check if an apology has already been sent (look for '(Apology Sent)' in the status).\n"
+    "3. If delayed AND no apology has been sent, use draft_apology_email to draft an apology (use 'Valued Customer' as the customer name).\n"
+    "4. If the order is ON TIME, DELIVERED, or an apology has ALREADY been sent, do NOT draft a new email.\n"
+    "5. When an email is drafted, include the FULL email content in your response.\n"
+    "6. Give a concise, direct summary. Do NOT add disclaimers or meta-commentary."
 )
-
 
 def _parse_failed_generation(failed_gen: str):
     match = re.match(r'<function=(\w+)>(.*)', failed_gen, re.DOTALL)
@@ -66,16 +66,18 @@ def _parse_failed_generation(failed_gen: str):
             pass
     return None, None
 
-
 def _execute_tool(fn_name: str, fn_args: dict, called_tools: set, last_shipping_status: str | None) -> str:
     called_tools.add(fn_name)
 
     if fn_name == "draft_apology_email":
-        if not last_shipping_status or "delayed" not in last_shipping_status.lower():
+        if not last_shipping_status:
+            return "Email skipped — status unknown."
+        if "delayed" not in last_shipping_status.lower():
             return "Email skipped — order is not delayed."
+        if "apology sent" in last_shipping_status.lower():
+            return "Email skipped — apology already sent for this order."
 
     return str(TOOL_MAP.get(fn_name, lambda a: "Unknown tool")(fn_args))
-
 
 def run_agent_stream(prompt_text: str):
     try:
@@ -97,6 +99,11 @@ def run_agent_stream(prompt_text: str):
         if "delayed" not in status.lower():
             yield {"type": "step", "data": "Compiling final report..."}
             yield {"type": "result", "data": f"Order {order_id} status: {status}. No action required."}
+            return
+
+        if "apology sent" in status.lower():
+            yield {"type": "step", "data": "Compiling final report..."}
+            yield {"type": "result", "data": f"Order {order_id} is currently {status}. An apology has already been sent, so no further action is required."}
             return
 
         messages = [

@@ -44,6 +44,11 @@ async def preflight_handler(request: Request, rest_of_path: str):
 def root():
     return {"status": "SentinelFlow Backend is Live"}
 
+@app.post("/mark_notified/{order_id}")
+def mark_notified(order_id: str):
+    from app.tools.logistics import SENT_APOLOGIES
+    SENT_APOLOGIES.add(order_id.upper())
+    return {"status": "success", "message": f"Order {order_id} marked as notified"}
 
 @app.post("/ask")
 def ask_agent(request: ChatRequest):

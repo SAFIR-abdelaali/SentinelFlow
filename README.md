@@ -73,6 +73,15 @@ graph LR
    npm run dev
    ```
 
+### Quickstart with Docker (Enterprise Recommendation)
+For the most stable, isolated, and scalable setup, we recommend using Docker Compose:
+1. Ensure Docker and Docker Compose are installed.
+2. In the root directory, run:
+   ```bash
+   docker-compose up --build
+   ```
+   This will spin up both the Next.js frontend and the FastAPI backend in synchronized containers.
+
 ## Business Impact
 
 SentinelFlow is designed to deliver immediate ROI through process digitalization:

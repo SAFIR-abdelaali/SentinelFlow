@@ -6,7 +6,32 @@
 
 Global logistics systems lose billions annually to "Reconciliation Gaps"—the friction between physical shipment anomalies (weather delays, hub congestion, carrier errors) and the internal data systems intended to track them. Traditionally, identifying a delay and communicating it to customers requires manual cross-referencing across multiple siloed platforms, leading to high operational overhead and customer dissatisfaction.
 
-**SentinelFlow** bridge this gap by deploying an autonomous AI core that continuously monitors logistics streams, identifies anomalies in real-time, and executes complex "Thought-Action" cycles to resolve them. It transforms a reactive process into a proactive, agentic workflow.
+**SentinelFlow** bridges this gap by deploying an autonomous AI core that continuously monitors logistics streams, identifies anomalies in real-time, and executes complex "Thought-Action" cycles to resolve them. It transforms a reactive process into a proactive, agentic workflow.
+
+---
+
+## 🚀 Judge's Quickstart: One-Click Deployment
+
+For the most stable, isolated, and scalable evaluation, we strongly recommend using **Docker Compose**. This ensures all AI dependencies and environment syncs are handled automatically.
+
+### 1. Environment Configuration
+GitHub's security policies prevent the submission of live API keys. For the judges:
+1. Locate `backend/.env.example`.
+2. Rename it to `backend/.env`.
+3. Paste your **Groq API Key** (Llama 3) into the file.
+*(Note: If you are the repository owner, you can bypass this by following the 'Unblock' link in the terminal if you've already configured it on GitHub).*
+
+### 2. Launch the Engine
+From the project root, execute:
+```bash
+docker-compose up --build
+```
+
+### 3. Access the Dashboard
+- **Frontend**: [http://localhost:3000](http://localhost:3000)
+- **Backend API**: [http://localhost:8000](http://localhost:8000)
+
+---
 
 ## Key Features
 
@@ -41,46 +66,22 @@ graph LR
 | **Frontend** | Next.js 15, Tailwind CSS | High-performance, responsive React framework. |
 | **Backend** | FastAPI, Uvicorn | High-concurrency Python ASGI web framework. |
 | **AI Layer** | LangChain, Groq, Llama 3 | Agentic orchestration and state-of-the-art LLM. |
-| **Data Flow** | Server-Sent Events (SSE) | Real-time streaming of agent execution steps. |
+| **Docker** | Compose, multi-stage builds | Standardized deployment and environment parity. |
 
-## Installation & Quickstart
+## Alternative: Local Development Setup
 
-### Backend Setup
-1. Navigate to the `backend` directory.
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Configure your `.env` file with your `GROQ_API_KEY`.
-5. Start the engine:
-   ```bash
-   python -m uvicorn app.main:app --reload --port 8000
-   ```
+If you prefer to run the services outside of Docker:
 
-### Frontend Setup
-1. Navigate to the `frontend` directory.
-2. Install NPM packages:
-   ```bash
-   npm install
-   ```
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
+### Backend
+1. `cd backend`
+2. `python -m venv venv && source venv/bin/activate` (Windows: `venv\Scripts\activate`)
+3. `pip install -r requirements.txt`
+4. `python -m uvicorn app.main:app --reload --port 8000`
 
-### Quickstart with Docker (Enterprise Recommendation)
-For the most stable, isolated, and scalable setup, we recommend using Docker Compose:
-1. Ensure Docker and Docker Compose are installed.
-2. In the root directory, run:
-   ```bash
-   docker-compose up --build
-   ```
-   This will spin up both the Next.js frontend and the FastAPI backend in synchronized containers.
+### Frontend
+1. `cd frontend`
+2. `npm install`
+3. `npm run dev`
 
 ## Business Impact
 

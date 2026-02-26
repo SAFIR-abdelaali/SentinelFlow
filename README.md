@@ -38,54 +38,65 @@ docker-compose up --build
 ### Autonomous Agentic Reasoning
 SentinelFlow is built on multi-step reasoning cycles. Using advanced LLMs (Llama 3), the agent doesn't just process data; it "thinks" through the implications of a logistics event, deciding when to query databases and when to draft communications.
 
-### Human-in-the-Loop (HITL)
-While the engine is autonomous, it maintains enterprise-grade control via a seamless approval workflow. AI-generated drafts are presented as editable templates, requiring explicit human validation before final execution, ensuring 100% brand alignment and accuracy.
+# SentinelFlow
 
-### Real-time Execution Trace
-Engineered for transparency, SentinelFlow provides a live visual trace of the AI’s decision-making process. The Decision Graph translates abstract LLM "thoughts" into a structured flowchart, providing full auditability of every action taken.
+**Autonomous Agentic Reconciliation Engine for Enterprise Logistics**
 
-### Enterprise Dashboard
-A high-impact mission control interface displaying critical KPIs including efficiency gains, data integrity scores, and live AI core status. Designed for executive-level oversight and operational agility.
+---
+
+## The Problem: The $4B Logistics Friction Gap
+
+In the global logistics sector, a persistent "Reconciliation Gap"—valued at over $4 billion annually—arises from the disconnect between real-world shipment anomalies (such as weather disruptions, hub congestion, and carrier delays) and the static nature of internal data systems. This gap results in operational inefficiencies, delayed resolutions, and compromised data integrity, impeding digital transformation and eroding return on investment (ROI) for enterprises.
+
+---
+
+## Quickstart: One-Click Deployment
+
+SentinelFlow is designed for rapid enterprise adoption. Deploy the entire stack with a single command using Docker Compose:
+
+```sh
+git clone https://github.com/your-org/sentinelflow.git
+cd sentinelflow
+docker compose up --build
+```
+
+- The frontend (Next.js 15 + Tailwind CSS) will be available at `http://localhost:3000`.
+- The backend (FastAPI + Uvicorn) will be available at `http://localhost:8000`.
+
+---
+
+## Key Features
+
+- **Autonomous Agentic Reasoning**: AI-driven core (LangChain, Groq, Llama 3) continuously monitors logistics data streams, identifies anomalies, and autonomously drafts resolution workflows through iterative Thought-Action cycles.
+- **Human-in-the-Loop (HITL) Validation**: Integrates human oversight for critical decision points, ensuring compliance, auditability, and operational trust.
+- **Real-time Execution Trace (Decision Graph)**: Visualizes the entire reconciliation process, providing transparency and actionable insights for every order and exception.
+
+---
 
 ## Architecture
 
+The following diagram illustrates the high-level architecture and data flow within SentinelFlow:
+
 ```mermaid
-graph LR
-    A[Frontend: Next.js 15] --> B[Backend: FastAPI]
-    B --> C[AI Core: LangChain Agent]
-    C --> D[LLM: Groq / Llama 3]
-    C --> E[Logistics API / DB]
-    C --> F[Email Draft Engine]
-    B -.-> A
+flowchart TD
+    A[Next.js 15 Frontend] -- API Calls --> B[FastAPI Backend]
+    B -- Reasoning Requests --> C[AI Core (LangChain, Groq, Llama 3)]
+    C -- Resolution/Insights --> B
+    B -- REST/GraphQL --> D[External APIs & Data Sources]
+    B -- Decision Graph Data --> A
 ```
 
-## Tech Stack
-
-| Component | Technology | Description |
-| :--- | :--- | :--- |
-| **Frontend** | Next.js 15, Tailwind CSS | High-performance, responsive React framework. |
-| **Backend** | FastAPI, Uvicorn | High-concurrency Python ASGI web framework. |
-| **AI Layer** | LangChain, Groq, Llama 3 | Agentic orchestration and state-of-the-art LLM. |
-| **Docker** | Compose, multi-stage builds | Standardized deployment and environment parity. |
-
-## Alternative: Local Development Setup
-
-If you prefer to run the services outside of Docker:
-
-### Backend
-1. `cd backend`
-2. `python -m venv venv && source venv/bin/activate` (Windows: `venv\Scripts\activate`)
-3. `pip install -r requirements.txt`
-4. `python -m uvicorn app.main:app --reload --port 8000`
-
-### Frontend
-1. `cd frontend`
-2. `npm install`
-3. `npm run dev`
+---
 
 ## Business Impact
 
-SentinelFlow is designed to deliver immediate ROI through process digitalization:
-- **4.2 Minutes Saved per Order**: Automation of status checks and communication drafting.
-- **100% Data Integrity**: Elimination of manual entry errors via direct database reconciliation.
-- **Operational Scalability**: Effortlessly handle batch processing of thousands of orders simultaneously.
+- **4.2 Minutes Saved per Order**: Automated reconciliation and workflow generation reduce manual intervention, accelerating order processing.
+- **100% Data Integrity**: Continuous monitoring and agentic reasoning ensure that internal systems reflect real-world logistics events with complete accuracy.
+- **Digitalization at Scale**: SentinelFlow enables enterprises to bridge the gap between physical operations and digital systems, unlocking new levels of efficiency and ROI.
+
+---
+
+## Author
+
+**Abdelaali Safir**  
+Software Engineering Student, ENSEM
